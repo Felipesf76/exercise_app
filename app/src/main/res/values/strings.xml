@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Exercise_app</string>
+    <string name="title_home">RITMO CONSTANTE</string>
+    <string name="welcome">¡Bienvenido!</string>
+    <string name="home_question">¿Qué deseas hacer?</string>
+    <string name="create_routine">Crear rutina</string>
 </resources>
