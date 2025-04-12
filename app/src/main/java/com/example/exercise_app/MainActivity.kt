@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.exercise_app.ui.theme.Exercise_appTheme
 import com.example.exercise_app.views.home.ManageRoutineView
+import com.example.exercise_app.views.home.SelectExerciseView
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +18,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             Exercise_appTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ManageRoutineView(innerPadding)
+                    //ManageRoutineView(innerPadding)
+                    SelectExerciseView(innerPadding)
                 }
             }
         }

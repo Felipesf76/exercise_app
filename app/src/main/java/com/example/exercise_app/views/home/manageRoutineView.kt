@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.res.stringResource
 import com.example.exercise_app.R
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 
 @Composable
 fun TitleManageRoutine() {
@@ -41,13 +43,21 @@ fun TitleManageRoutine() {
 
 @Composable
 fun ManageRoutineView(padding: PaddingValues) {
-    val routines = listOf("RUTINA 1", "RUTINA 2", "RUTINA 3", "RUTINA 4", "RUTINA 5")
+    val routines = listOf("RUTINA 1", "RUTINA 2", "RUTINA 3", "RUTINA 4", "RUTINA 5","RUTINA 6", "RUTINA 7", "RUTINA 8", "RUTINA 9", "RUTINA 10")
 
-    Column(modifier = Modifier.padding(padding).padding(16.dp)) {
-        TitleHomePage()
-        Spacer(modifier = Modifier.height(16.dp))
-        routines.forEach { routine ->
-            RoutineCard(routineName = routine)
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .verticalScroll(scrollState)
+    ) {
+        Column(modifier = Modifier.padding(padding).padding(16.dp)) {
+            TitleHomePage()
+            Spacer(modifier = Modifier.height(16.dp))
+            routines.forEach { routine ->
+                RoutineCard(routineName = routine)
+            }
         }
     }
+
 }
