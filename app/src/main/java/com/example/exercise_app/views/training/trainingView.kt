@@ -1,4 +1,4 @@
-package com.example.exercise_app.views.home
+package com.example.exercise_app.views.training
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -13,13 +13,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.exercise_app.R
-import com.example.exercise_app.views.components.ExerciseCard
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import com.example.exercise_app.views.components.TrainingCard
+import com.example.exercise_app.views.exercises.TitleSelectExercise
 
-data class Ejercicio(
+data class Exercise(
     val nombre: String,
     val descripcion: String,
     val imagenResId: Int,
@@ -29,7 +29,7 @@ data class Ejercicio(
 )
 
 @Composable
-fun TitleSelectExercise() {
+fun TitleTrainingExercise() {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -54,16 +54,13 @@ fun TitleSelectExercise() {
 }
 
 @Composable
-fun SelectExerciseView(padding: PaddingValues) {
+fun TrainingView(padding: PaddingValues) {
     val ejercicios = listOf(
-        Ejercicio("Curl con barra", "Ejercicio principal para bíceps...", R.drawable.curl_barra, 4, 10, 60),
-        Ejercicio("Fondos en paralelas", "Ejercicio compuesto, puede hacerse con peso...", R.drawable.fondos_paralelas, 4, 10, 60),
-        Ejercicio("Press de banca", "Ejercicio base para pecho...", R.drawable.press_banca, 4, 8, 90),
+        Exercise("Curl con barra", "Ejercicio principal para bíceps...", R.drawable.curl_barra, 4, 10, 60),
+        Exercise("Fondos en paralelas", "Ejercicio compuesto, puede hacerse con peso...", R.drawable.fondos_paralelas, 4, 10, 60),
+        Exercise("Press de banca", "Ejercicio base para pecho...", R.drawable.press_banca, 4, 8, 90),
         // Agrega más ejercicios según sea necesario
     )
-
-    //Variables generadas
-    var nombreRutina by remember { mutableStateOf("") }
 
     val scrollState = rememberScrollState()
 
@@ -75,19 +72,11 @@ fun SelectExerciseView(padding: PaddingValues) {
             //titulo
             TitleSelectExercise()
 
-            // TextBox
-            Spacer(modifier = Modifier.height(16.dp))
-            OutlinedTextField(
-                value = nombreRutina,
-                onValueChange = { nombreRutina = it },
-                label = { Text("Nombre de rutina:") },
-                modifier = Modifier.fillMaxWidth()
-            )
 
             //exercise list
             Spacer(modifier = Modifier.height(16.dp))
             ejercicios.forEach {
-                ExerciseCard(
+                TrainingCard(
                     nombre = it.nombre,
                     descripcion = it.descripcion,
                     imagenResId = it.imagenResId,
@@ -97,15 +86,15 @@ fun SelectExerciseView(padding: PaddingValues) {
                 )
             }
 
-            //submit buttom
+            //terminar entrenamiento buttom
             Button(
                 onClick = {
 
-                    Log.d("Rutina", "Creando rutina $nombreRutina")
+                    Log.d("Entrenamiento Finalizado", "Entrenamiento Finalizado")
                 },
                 modifier = Modifier.align(Alignment.End)
             ) {
-                Text("Crear rutina")
+                Text("Terminar Entrenamiento")
             }
         }
     }

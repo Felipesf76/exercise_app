@@ -1,4 +1,4 @@
-package com.example.exercise_app.views.home
+package com.example.exercise_app.views.routines
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.exercise_app.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import com.example.exercise_app.views.home.TitleHomePage
 
 @Composable
 fun TitleManageRoutine() {
