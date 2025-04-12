@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.exercise_app.ui.theme.Exercise_appTheme
-import com.example.exercise_app.views.home.BoxHomeScreen
+import com.example.exercise_app.views.home.ManageRoutineView
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Exercise_appTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    BoxHomeScreen(innerPadding)
+                    ManageRoutineView(innerPadding)
                 }
             }
         }
