@@ -1,15 +1,12 @@
 package com.example.exercise_app.views.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,14 +17,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.exercise_app.R
 import com.example.exercise_app.views.components.ButtonRedirect
 
 @Composable
-fun BoxHomeScreen(innerPadding: PaddingValues){
+fun BoxHomeScreen(navController: NavHostController){
     Column (
         modifier = Modifier
-            .padding(innerPadding)
             .background(color = Color.White)
             .fillMaxWidth()
             .fillMaxHeight(),
@@ -37,28 +34,39 @@ fun BoxHomeScreen(innerPadding: PaddingValues){
         Box (
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
-                .border(width = 1.dp, color = Color.Black),
+                .height(100.dp),
             contentAlignment = Alignment.Center
         ){
             TitleHomePage()
         }
         Box (
             modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .border(width = 1.dp, color = Color.Black)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
         ){
-            Text(
-                text= stringResource(R.string.home_question),
-                style = TextStyle(
-                    color = Color.Black,
-                    fontSize = 10.sp,
+            Column (
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ){
+                Text(
+                    text= stringResource(R.string.home_question),
+                    style = TextStyle(
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                    )
                 )
-            )
-            ButtonRedirect(onClick = {
-                // Aquí puedes agregar la lógica para crear una rutina
-            })
+                ButtonRedirect(
+                    text = stringResource(R.string.create_routine),
+                    onClick = {
+                        println("Click a a")
+                    })
+                ButtonRedirect(
+                    text = stringResource(R.string.do_exercise),
+                    onClick = {
+                        println("Click a b")
+                    })
+            }
         }
     }
 }
