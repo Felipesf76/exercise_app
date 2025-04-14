@@ -1,5 +1,6 @@
 package com.example.exercise_app.views.routines
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.exercise_app.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.navigation.NavHostController
 import com.example.exercise_app.views.home.TitleHomePage
 
 @Composable
@@ -43,7 +45,7 @@ fun TitleManageRoutine() {
 }
 
 @Composable
-fun ManageRoutineView(padding: PaddingValues) {
+fun ManageRoutineView(navController: NavHostController) {
     val routines = listOf("RUTINA 1", "RUTINA 2", "RUTINA 3", "RUTINA 4", "RUTINA 5","RUTINA 6", "RUTINA 7", "RUTINA 8", "RUTINA 9", "RUTINA 10")
 
     val scrollState = rememberScrollState()
@@ -51,12 +53,13 @@ fun ManageRoutineView(padding: PaddingValues) {
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
+            .background(color = Color.White)
     ) {
-        Column(modifier = Modifier.padding(padding).padding(16.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
             TitleHomePage()
             Spacer(modifier = Modifier.height(16.dp))
             routines.forEach { routine ->
-                RoutineCard(routineName = routine)
+                RoutineCard(navController, routineName = routine)
             }
         }
     }

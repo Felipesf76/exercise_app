@@ -44,7 +44,9 @@ fun TrainingCard(
                     text = nombre,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    color = Color.Black
+
                 )
             }
 
@@ -66,9 +68,9 @@ fun TrainingCard(
                     Text(text = descripcion, fontSize = 14.sp, maxLines = 4)
                     Spacer(modifier = Modifier.height(4.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text("$descanso seg", fontSize = 12.sp)
-                        Text("$repeticiones rep", fontSize = 12.sp)
-                        Text("$series series", fontSize = 12.sp)
+                        Text("$descanso seg", fontSize = 12.sp, color = Color.Black)
+                        Text("$repeticiones rep", fontSize = 12.sp, color = Color.Black)
+                        Text("$series series", fontSize = 12.sp, color = Color.Black)
                     }
                 }
             }
@@ -76,7 +78,7 @@ fun TrainingCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             // Marcas de entrenamiento
-            Text("Marcas de entrenamiento", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text("Marcas de entrenamiento", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black)
 
             // Campos para ingresar datos de entrenamiento
             Column {
@@ -86,7 +88,7 @@ fun TrainingCard(
                     onValueChange = { value ->
                         numSeries = value.toIntOrNull() ?: 0
                     },
-                    label = { Text("Series") },
+                    label = { Text("Series", color = Color.Black) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -126,7 +128,7 @@ fun TrainingCard(
                     },
                     modifier = Modifier.align(Alignment.End)
                 ) {
-                    Text("Evaluar")
+                    Text("Evaluar", color = Color.Black)
                 }
             }
         }

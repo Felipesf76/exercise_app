@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.exercise_app.R
+import com.example.exercise_app.data.utils.Screen
 import com.example.exercise_app.views.components.ButtonRedirect
 
 @Composable
@@ -59,12 +60,12 @@ fun BoxHomeScreen(navController: NavHostController){
                 ButtonRedirect(
                     text = stringResource(R.string.create_routine),
                     onClick = {
-                        println("Click a a")
+                        // falta página de crear una rutina
                     })
                 ButtonRedirect(
                     text = stringResource(R.string.do_exercise),
                     onClick = {
-                        println("Click a b")
+                        navController.navigate(Screen.RoutineScreen.route)
                     })
             }
         }

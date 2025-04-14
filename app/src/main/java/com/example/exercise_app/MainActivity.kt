@@ -15,7 +15,7 @@ import com.example.exercise_app.views.routines.ManageRoutineView
 import com.example.exercise_app.views.training.TrainingView
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
-import com.example.exercise_app.views.utils.Screen
+import com.example.exercise_app.data.utils.Screen
 import androidx.compose.foundation.layout.padding
 
 class MainActivity : ComponentActivity() {
@@ -36,9 +36,13 @@ class MainActivity : ComponentActivity() {
                             BoxHomeScreen(navController)
                         }
                         //Otra página
-                        //composable(route = Screen.HomeScreen.route) {
-                        //    BoxHomeScreen(innerPadding)
-                        //}
+                        composable(route = Screen.RoutineScreen.route) {
+                            ManageRoutineView(navController)
+                        }
+
+                        composable(route = Screen.TrainingScreen.route) {
+                            TrainingView(navController)
+                        }
 
                     }
                 }

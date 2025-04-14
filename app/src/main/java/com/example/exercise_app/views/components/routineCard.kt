@@ -13,9 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.exercise_app.data.utils.Screen
 
 @Composable
-fun RoutineCard(routineName: String) {
+fun RoutineCard(navController: NavHostController, routineName: String) {
     Card(
         border = BorderStroke(1.dp, Color.Black),
         shape = RoundedCornerShape(8.dp),
@@ -56,7 +58,11 @@ fun RoutineCard(routineName: String) {
                 }
             }
 
-            IconButton(onClick = { Log.d("RoutineCard", "Iniciando entrenamiento $routineName") }) {
+            IconButton(
+                onClick = {
+                    navController.navigate(Screen.TrainingScreen.route)
+                }
+            ) {
                 Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Iniciar")
             }
         }

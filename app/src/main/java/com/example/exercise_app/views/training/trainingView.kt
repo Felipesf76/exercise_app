@@ -1,6 +1,7 @@
 package com.example.exercise_app.views.training
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import com.example.exercise_app.R
 import androidx.compose.material3.Text
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.navigation.NavHostController
 import com.example.exercise_app.views.components.TrainingCard
 import com.example.exercise_app.views.exercises.TitleSelectExercise
 
@@ -54,7 +56,7 @@ fun TitleTrainingExercise() {
 }
 
 @Composable
-fun TrainingView(padding: PaddingValues) {
+fun TrainingView(navController: NavHostController) {
     val ejercicios = listOf(
         Exercise("Curl con barra", "Ejercicio principal para bíceps...", R.drawable.curl_barra, 4, 10, 60),
         Exercise("Fondos en paralelas", "Ejercicio compuesto, puede hacerse con peso...", R.drawable.fondos_paralelas, 4, 10, 60),
@@ -67,8 +69,9 @@ fun TrainingView(padding: PaddingValues) {
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
+            .background(color = Color.White)
     ) {
-        Column(modifier = Modifier.padding(padding).padding(16.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
             //titulo
             TitleSelectExercise()
 
@@ -94,10 +97,13 @@ fun TrainingView(padding: PaddingValues) {
                 },
                 modifier = Modifier.align(Alignment.End)
             ) {
-                Text("Terminar Entrenamiento")
+                Text(
+                    text = "Terminar Entrenamiento",
+                    style = TextStyle(
+                            color = Color.Black
+                        )
+                )
             }
         }
     }
-
-
 }
