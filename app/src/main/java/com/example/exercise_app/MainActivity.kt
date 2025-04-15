@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         val db = Room.databaseBuilder(
             applicationContext,
             Database::class.java,
-            Database.DATABASE_NAME
+           Database.DATABASE_NAME
         )
             .createFromAsset("app_rutinas.db")
             .build()
@@ -65,6 +65,9 @@ class MainActivity : ComponentActivity() {
                         //Otra página
                         composable(route = Screen.RoutineScreen.route) {
                             ManageRoutineView(navController)
+                        }
+                        composable(route = Screen.ExerciseScreen.route) {
+                            SelectExerciseView(navController)
                         }
 
                         composable(route = Screen.TrainingScreen.route) {

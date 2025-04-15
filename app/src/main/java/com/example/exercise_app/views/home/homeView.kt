@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import com.example.exercise_app.R
 import com.example.exercise_app.data.utils.Screen
 import com.example.exercise_app.views.components.ButtonRedirect
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun BoxHomeScreen(navController: NavHostController){
@@ -61,6 +62,7 @@ fun BoxHomeScreen(navController: NavHostController){
                     text = stringResource(R.string.create_routine),
                     onClick = {
                         // falta página de crear una rutina
+                        navController.navigate(Screen.ExerciseScreen.route)
                     })
                 ButtonRedirect(
                     text = stringResource(R.string.do_exercise),

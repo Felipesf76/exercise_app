@@ -1,6 +1,7 @@
 package com.example.exercise_app.views.exercises
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.navigation.NavHostController
 
 data class Ejercicio(
     val nombre: String,
@@ -31,7 +33,8 @@ data class Ejercicio(
 @Composable
 fun TitleSelectExercise() {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -54,7 +57,7 @@ fun TitleSelectExercise() {
 }
 
 @Composable
-fun SelectExerciseView(padding: PaddingValues) {
+fun SelectExerciseView(navController: NavHostController) {
     val ejercicios = listOf(
         Ejercicio("Curl con barra", "Ejercicio principal para bíceps...", R.drawable.curl_barra, 4, 10, 60),
         Ejercicio("Fondos en paralelas", "Ejercicio compuesto, puede hacerse con peso...", R.drawable.fondos_paralelas, 4, 10, 60),
@@ -70,8 +73,9 @@ fun SelectExerciseView(padding: PaddingValues) {
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
+            .background(color = Color.White),
     ) {
-        Column(modifier = Modifier.padding(padding).padding(16.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
             //titulo
             TitleSelectExercise()
 

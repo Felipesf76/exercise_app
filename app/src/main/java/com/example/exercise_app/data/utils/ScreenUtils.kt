@@ -4,4 +4,5 @@ sealed class Screen (val route: String) {
     data object HomeScreen : Screen(route = "home_screen")
     data object TrainingScreen : Screen(route = "training_screen")
     data object RoutineScreen : Screen (route = "routine_screen")
+    data object ExerciseScreen : Screen (route = "exercise_screen")
 }

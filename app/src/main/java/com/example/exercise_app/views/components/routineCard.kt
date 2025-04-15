@@ -63,7 +63,10 @@ fun RoutineCard(navController: NavHostController, routineName: String) {
                     navController.navigate(Screen.TrainingScreen.route)
                 }
             ) {
-                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Iniciar")
+                Icon(
+                    imageVector = Icons.Default.ArrowForward,
+                    contentDescription = "Iniciar",
+                )
             }
         }
     }
