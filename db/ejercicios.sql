@@ -5,15 +5,15 @@
 -- Tabla de Rutinas
 CREATE TABLE rutinas (
     idRutinas INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre VARCHAR(100) NOT NULL UNIQUE
+    nombre TEXT NOT NULL UNIQUE
 );
 
 -- Tabla de Ejercicios
 CREATE TABLE ejercicios (
     idEjercicios INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-    descripcion VARCHAR(100),
-    imagen VARCHAR(100),
+    nombre TEXT NOT NULL,
+    descripcion TEXT,
+    imagen TEXT,
     series INTEGER CHECK(series > 0),
     repeticiones INTEGER CHECK(repeticiones > 0),
     tiempoDescanso INTEGER CHECK(tiempoDescanso >= 10)
@@ -31,6 +31,7 @@ CREATE TABLE rutinas_ejercicios (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
 
 -- ======================================
 -- ========== INSERCIÓN DE DATOS ==========
@@ -95,23 +96,49 @@ INSERT INTO ejercicios (nombre, descripcion, imagen, series, repeticiones, tiemp
 
 -- Rutina LUNES (Pecho + Bíceps + Trapecio)
 INSERT INTO rutinas_ejercicios (rutina_id, ejercicio_id) VALUES
-    (1, 7), (1, 8), (1, 1), (1, 2), (1, 19), (1, 20);
+    (1, 7),  -- Press de banca
+    (1, 8),  -- Press inclinado con mancuernas
+    (1, 1),  -- Curl con barra
+    (1, 2),  -- Curl martillo
+    (1, 16), -- Encogimientos con mancuernas
+    (1, 17); -- Remo al cuello con barra Z
 
 -- Rutina MARTES (Espalda + Tríceps + Abdomen)
 INSERT INTO rutinas_ejercicios (rutina_id, ejercicio_id) VALUES
-    (2, 10), (2, 11), (2, 4), (2, 5), (2, 12), (2, 6);
+    (2, 10), -- Dominadas
+    (2, 11), -- Remo con barra
+    (2, 4),  -- Fondos en paralelas
+    (2, 5),  -- Extensión con cuerda en polea
+    (2, 6),  -- Press francés con barra Z
+    (2, 18); -- Farmer’s walk
 
 -- Rutina MIÉRCOLES (Piernas: Cuádriceps + Femorales + Glúteos)
 INSERT INTO rutinas_ejercicios (rutina_id, ejercicio_id) VALUES
-    (3, 28), (3, 29), (3, 30), (3, 16), (3, 17), (3, 22);
+    (3, 25), -- Sentadillas
+    (3, 26), -- Prensa de piernas
+    (3, 27), -- Extensión de piernas
+    (3, 19), -- Peso muerto rumano
+    (3, 20), -- Curl femoral en máquina
+    (3, 22); -- Hip thrust
 
 -- Rutina JUEVES (Hombros + Pecho + Bíceps)
 INSERT INTO rutinas_ejercicios (rutina_id, ejercicio_id) VALUES
-    (4, 13), (4, 14), (4, 15), (4, 9), (4, 3), (4, 1);
+    (4, 13), -- Press militar con barra
+    (4, 14), -- Elevaciones laterales
+    (4, 15), -- Pájaros con mancuernas
+    (4, 9),  -- Aperturas con mancuernas
+    (4, 3),  -- Curl concentrado
+    (4, 1);  -- Curl con barra
 
 -- Rutina VIERNES (Espalda + Piernas + Glúteos/Core)
 INSERT INTO rutinas_ejercicios (rutina_id, ejercicio_id) VALUES
-    (5, 10), (5, 18), (5, 23), (5, 24), (5, 27), (5, 17);
+    (5, 12), -- Jalón al pecho
+    (5, 24), -- Peso muerto sumo
+    (5, 23), -- Patada de glúteo en polea
+    (5, 21), -- Buenos días
+    (5, 17), -- Remo al cuello con barra Z
+    (5, 18); -- Farmer’s walk
+
 
 -- ======================================
 -- ========== CONSULTAS SELECT ==========
