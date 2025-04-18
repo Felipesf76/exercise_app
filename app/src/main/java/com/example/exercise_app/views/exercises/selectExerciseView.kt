@@ -19,7 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
+import com.example.exercise_app.views.components.TitleComponent
 
 data class Ejercicio(
     val nombre: String,
@@ -29,32 +31,6 @@ data class Ejercicio(
     val repeticiones: Int,
     val descanso: Int
 )
-
-@Composable
-fun TitleSelectExercise() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = stringResource(R.string.title_home),
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Black
-            )
-        )
-        Text(
-            text = stringResource(R.string.welcome),
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Black
-            )
-        )
-    }
-}
 
 @Composable
 fun SelectExerciseView(navController: NavHostController) {
@@ -73,18 +49,26 @@ fun SelectExerciseView(navController: NavHostController) {
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
-            .background(color = Color.White),
+            .background(color = colorResource(R.color.Primary)),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             //titulo
-            TitleSelectExercise()
+            TitleComponent(
+                //Modificar si es creación o editar
+                stringResource(R.string.create_routine)
+            )
 
             // TextBox
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 value = nombreRutina,
                 onValueChange = { nombreRutina = it },
-                label = { Text("Nombre de rutina:") },
+                label = {
+                    Text(
+                        text = stringResource(R.string.routin_name),
+                        color = colorResource(R.color.Secondary)
+                    )
+                },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -104,15 +88,19 @@ fun SelectExerciseView(navController: NavHostController) {
             //submit buttom
             Button(
                 onClick = {
-
                     Log.d("Rutina", "Creando rutina $nombreRutina")
                 },
-                modifier = Modifier.align(Alignment.End)
+                modifier = Modifier.align(Alignment.End),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.Success),
+                    contentColor = colorResource(R.color.Primary)
+                )
             ) {
-                Text("Crear rutina")
+                Text(
+                    // HACER LA LÓGICA PARA CREAR O EDITAR RUTINA
+                    text = stringResource(R.string.create_routine)
+                )
             }
         }
     }
-
-
 }

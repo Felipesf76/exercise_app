@@ -5,4 +5,15 @@
     <string name="home_question">¿Qué deseas hacer?</string>
     <string name="create_routine">Crear rutina</string>
     <string name="do_exercise">Hacer ejercicio</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="go_execise">Ir al ejercicio</string>
+    <string name="my_routines">MIS RUTINAS</string>
+    <string name="weight">Peso (Kg)</string>
+    <string name="training_brands">Marcas de entrenamiento</string>
+    <string name="assess">Evaluar</string>
+    <string name="repetitions">Repeticiones</string>
+    <string name="finish_training">Terminar Entrenamiento</string>
+    <string name="routin_name">Nombre de la rutina</string>
+    <string name="series">Series</string>
 </resources>

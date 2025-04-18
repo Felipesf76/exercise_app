@@ -38,8 +38,6 @@ class MainActivity : ComponentActivity() {
             .build()
 
         lifecycleScope.launch {
-
-            //RUTINAS
             val rutinas = db.rutinaDao.getRutinas()
             rutinas.forEach {
                 Log.d("TEST_DB", "Rutina: ${it.idRutinas} - ${it.nombre}")
@@ -62,7 +60,6 @@ class MainActivity : ComponentActivity() {
                         composable(route = Screen.HomeScreen.route) {
                             BoxHomeScreen(navController)
                         }
-                        //Otra página
                         composable(route = Screen.RoutineScreen.route) {
                             ManageRoutineView(navController)
                         }

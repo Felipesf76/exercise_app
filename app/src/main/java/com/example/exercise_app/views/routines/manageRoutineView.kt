@@ -6,62 +6,56 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.exercise_app.views.components.RoutineCard
-import androidx.compose.ui.Alignment
-import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.res.stringResource
 import com.example.exercise_app.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.navigation.NavHostController
-import com.example.exercise_app.views.home.TitleHomePage
-
-@Composable
-fun TitleManageRoutine() {
-    Column (
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = stringResource(R.string.title_home),
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Black
-            )
-        )
-        Text(
-            text = stringResource(R.string.welcome),
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Black
-            )
-        )
-    }
-}
+import com.example.exercise_app.views.components.TitleComponent
+import androidx.compose.material3.Scaffold
+import androidx.compose.ui.res.colorResource
+import com.example.exercise_app.data.utils.Screen
 
 @Composable
 fun ManageRoutineView(navController: NavHostController) {
     val routines = listOf("RUTINA 1", "RUTINA 2", "RUTINA 3", "RUTINA 4", "RUTINA 5","RUTINA 6", "RUTINA 7", "RUTINA 8", "RUTINA 9", "RUTINA 10")
-
     val scrollState = rememberScrollState()
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
-            .background(color = Color.White)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            TitleHomePage()
-            Spacer(modifier = Modifier.height(16.dp))
-            routines.forEach { routine ->
-                RoutineCard(navController, routineName = routine)
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate(Screen.ExerciseScreen.route)
+                },
+                containerColor = colorResource(R.color.Fourth),
+                contentColor = colorResource(R.color.Primary)
+            ){
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.create_routine)
+                )
+            }
+        }
+    ){ contentPadding ->
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                .background(color = colorResource(R.color.Primary))
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                TitleComponent(
+                    title = stringResource(R.string.my_routines)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                routines.forEach { routine ->
+                    RoutineCard(navController, routineName = routine)
+                }
             }
         }
     }
-
 }
