@@ -2,6 +2,8 @@ package com.example.exercise_app.data
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.exercise_app.model.RutinaEjercicio
 
@@ -37,6 +39,9 @@ interface RutinaEjercicioDAO {
 
     @Query("UPDATE rutinas_ejercicios SET ejercicio_id = :nuevoEjercicioId WHERE rutina_id = :rutinaId AND ejercicio_id = :ejercicioId")
     suspend fun actualizarEjercicioEnRutina(rutinaId: Int,ejercicioId: Int,nuevoEjercicioId: Int)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertRutinaEjercicio(rutinaEjercicio: RutinaEjercicio): Long
 
     @Delete
     suspend fun deleteRutinaEjercicio(rutinaEjercicio : RutinaEjercicio)

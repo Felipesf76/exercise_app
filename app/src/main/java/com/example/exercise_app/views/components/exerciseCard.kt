@@ -20,10 +20,11 @@ import androidx.compose.ui.unit.sp
 fun ExerciseCard(
     nombre: String?,
     descripcion: String?,
-    imagenResId: Int,
+    imagenResId: Int?,
     repeticiones: Int?,
     series: Int?,
-    descanso: Int?
+    descanso: Int?,
+    onCheckedChange: (Boolean) -> Unit
 ) {
     var isChecked by remember { mutableStateOf(false) }
 
@@ -48,7 +49,8 @@ fun ExerciseCard(
                     checked = isChecked,
                     onCheckedChange = {
                         isChecked = it
-                        Log.d("ExerciseCard", if (it) "$nombre agregado" else "$nombre eliminado")
+                        onCheckedChange(it)
+                        //Log.d("ExerciseCard", if (it) "$nombre agregado" else "$nombre eliminado")
                     }
                 )
             }
@@ -60,7 +62,7 @@ fun ExerciseCard(
                 horizontalArrangement = Arrangement.Start
             ) {
                 Image(
-                    painter = painterResource(id = imagenResId),
+                    painter = painterResource(id = imagenResId!!),
                     contentDescription = "Imagen del ejercicio",
                     modifier = Modifier
                         .size(80.dp)

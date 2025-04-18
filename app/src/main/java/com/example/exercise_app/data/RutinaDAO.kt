@@ -2,6 +2,8 @@ package com.example.exercise_app.data
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.exercise_app.model.Rutina
@@ -17,6 +19,9 @@ interface RutinaDAO {
 
     @Upsert
     suspend fun upsertRutina(rutina : Rutina)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRutina(rutina: Rutina): Long
 
     @Delete
     suspend fun deleteRutina(rutina : Rutina)

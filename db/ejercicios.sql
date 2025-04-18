@@ -13,7 +13,7 @@ CREATE TABLE ejercicios (
     idEjercicios INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
     descripcion TEXT,
-    imagen INTEGER,
+    imagenName TEXT,
     series INTEGER CHECK(series > 0),
     repeticiones INTEGER CHECK(repeticiones > 0),
     tiempoDescanso INTEGER CHECK(tiempoDescanso >= 10)
@@ -46,51 +46,51 @@ INSERT INTO rutinas (nombre) VALUES
     ('Rutina VIERNES');
 
 -- Ejercicios
-INSERT INTO ejercicios (nombre, descripcion, imagen, series, repeticiones, tiempoDescanso) VALUES
+INSERT INTO ejercicios (nombre, descripcion, imagenName, series, repeticiones, tiempoDescanso) VALUES
 -- BÍCEPS
-    ('Curl con barra', 'Ejercicio principal para bíceps, realizar con peso moderado a pesado, lento y controlado', 2130968577, 4, 10, 60),
-    ('Curl martillo', 'Ejercicio para trabajar bíceps y braquial, mantener los codos fijos', 2130968605, 3, 12, 60),
-    ('Curl concentrado', 'Ejercicio de aislamiento, forma estricta y controlada, no balancear el cuerpo', 2130968603, 3, 12, 60),
+    ('Curl con barra', 'Ejercicio principal para bíceps, realizar con peso moderado a pesado, lento y controlado', "curl_barra", 4, 10, 60),
+    ('Curl martillo', 'Ejercicio para trabajar bíceps y braquial, mantener los codos fijos', "curl_martillo", 3, 12, 60),
+    ('Curl concentrado', 'Ejercicio de aislamiento, forma estricta y controlada, no balancear el cuerpo', "curl_concentrado", 3, 12, 60),
 
 -- TRÍCEPS
-    ('Fondos en paralelas', 'Ejercicio compuesto, puede hacerse con peso, explosivo pero controlado en bajada', 2130968578, 4, 10, 60),
-    ('Extensión con cuerda en polea', 'Mantener codos fijos, movimiento controlado, enfoque en la contracción del tríceps', 2130968609, 3, 12, 45),
-    ('Press francés con barra Z', 'Movimiento lento, sin balancear los codos, evitar mover los hombros', 2130968619, 3, 10, 60),
+    ('Fondos en paralelas', 'Ejercicio compuesto, puede hacerse con peso, explosivo pero controlado en bajada', "fondos_paralelas", 4, 10, 60),
+    ('Extensión con cuerda en polea', 'Mantener codos fijos, movimiento controlado, enfoque en la contracción del tríceps', "extension_cuerda_polea", 3, 12, 45),
+    ('Press francés con barra Z', 'Movimiento lento, sin balancear los codos, evitar mover los hombros', "press_frances", 3, 10, 60),
 
 -- PECHO
-    ('Press de banca', 'Ejercicio base para pecho, realizar con peso moderado a pesado, forma controlada', 2130968600, 4, 8, 90),
-    ('Press inclinado con mancuernas', 'Enfocado en parte superior del pecho, movimiento controlado', 2130968620, 3, 10, 60),
-    ('Aperturas con mancuernas', 'Movimiento de estiramiento, usar peso moderado, lento y amplio', 2130968601, 3, 12, 45),
+    ('Press de banca', 'Ejercicio base para pecho, realizar con peso moderado a pesado, forma controlada', "press_banca", 4, 8, 90),
+    ('Press inclinado con mancuernas', 'Enfocado en parte superior del pecho, movimiento controlado', "press_inclinado", 3, 10, 60),
+    ('Aperturas con mancuernas', 'Movimiento de estiramiento, usar peso moderado, lento y amplio', "aperturas_mancuernas", 3, 12, 45),
 
 -- ESPALDA
-    ('Dominadas', 'Ejercicio compuesto, enfoque en amplitud, explosivo al subir, lento al bajar', 2130968606, 4, 8, 90),
-    ('Remo con barra', 'Remo pesado para grosor de espalda, mantener espalda recta y controlar el movimiento', 2130968623, 4, 10, 60),
-    ('Jalón al pecho', 'Enfocado en dorsales, controlar el recorrido y mantener el pecho elevado', 2130968613, 3, 12, 60),
+    ('Dominadas', 'Ejercicio compuesto, enfoque en amplitud, explosivo al subir, lento al bajar', "dominadas", 4, 8, 90),
+    ('Remo con barra', 'Remo pesado para grosor de espalda, mantener espalda recta y controlar el movimiento', "remos_barra", 4, 10, 60),
+    ('Jalón al pecho', 'Enfocado en dorsales, controlar el recorrido y mantener el pecho elevado', "jalon_pecho", 3, 12, 60),
 
 -- HOMBROS
-    ('Press militar con barra', 'Ejercicio principal de hombros, controlado, evitar balanceos', 2130968621, 4, 8, 90),
-    ('Elevaciones laterales', 'Para deltoides laterales, peso moderado, lento y sin impulso', 2130968607, 3, 15, 45),
-    ('Pájaros con mancuernas', 'Para deltoides posteriores, lento y controlado', 2130968614, 3, 15, 45),
+    ('Press militar con barra', 'Ejercicio principal de hombros, controlado, evitar balanceos', "press_militar", 4, 8, 90),
+    ('Elevaciones laterales', 'Para deltoides laterales, peso moderado, lento y sin impulso', "elevaciones_laterales", 3, 15, 45),
+    ('Pájaros con mancuernas', 'Para deltoides posteriores, lento y controlado', "pajaros_mancuernas", 3, 15, 45),
 
 -- TRAPECIOS
-    ('Encogimientos con mancuernas', 'Movimiento corto, controlar la subida y bajada, sin girar los hombros', 2130968608, 4, 15, 30),
-    ('Remo al cuello con barra Z', 'Activación de trapecios y deltoides, evitar peso excesivo', 2130968622, 3, 12, 45),
-    ('Farmer’s walk', 'Caminar sosteniendo peso, mantener postura erguida, buen ejercicio funcional', 2130968611, 3, 30, 60),
+    ('Encogimientos con mancuernas', 'Movimiento corto, controlar la subida y bajada, sin girar los hombros', "encogimientos", 4, 15, 30),
+    ('Remo al cuello con barra Z', 'Activación de trapecios y deltoides, evitar peso excesivo', "remo_cuello", 3, 12, 45),
+    ('Farmer’s walk', 'Caminar sosteniendo peso, mantener postura erguida, buen ejercicio funcional', "farmers_walk", 3, 30, 60),
 
 -- FEMORAL
-    ('Peso muerto rumano', 'Lento y controlado, enfocado en estiramiento del femoral', 2130968617, 4, 10, 60),
-    ('Curl femoral en máquina', 'Enfocado y controlado, sin rebotes', 2130968604, 3, 12, 45),
-    ('Buenos días', 'Ejercicio técnico, mantener la espalda recta y movimiento lento', 2130968602, 3, 10, 60),
+    ('Peso muerto rumano', 'Lento y controlado, enfocado en estiramiento del femoral', "pesso_rumano", 4, 10, 60),
+    ('Curl femoral en máquina', 'Enfocado y controlado, sin rebotes', "curl_femoral", 3, 12, 45),
+    ('Buenos días', 'Ejercicio técnico, mantener la espalda recta y movimiento lento', "buenos_dias", 3, 10, 60),
 
 -- GLÚTEOS
-    ('Hip thrust', 'Ejercicio principal para glúteos, concentrarse en la contracción al subir', 2130968612, 4, 12, 60),
-    ('Patada de glúteo en polea', 'Movimiento de aislamiento, forma estricta y controlada', 2130968615, 3, 15, 45),
-    ('Peso muerto sumo', 'Apertura de piernas amplia, foco en glúteos e internos de piernas', 2130968616, 4, 10, 60),
+    ('Hip thrust', 'Ejercicio principal para glúteos, concentrarse en la contracción al subir', "hip_trust", 4, 12, 60),
+    ('Patada de glúteo en polea', 'Movimiento de aislamiento, forma estricta y controlada', "patada_gluteo", 3, 15, 45),
+    ('Peso muerto sumo', 'Apertura de piernas amplia, foco en glúteos e internos de piernas', "peso_muerto", 4, 10, 60),
 
 -- CUÁDRICEPS
-    ('Sentadillas', 'Ejercicio básico y completo, debe realizarse con buena técnica y control', 2130968624, 4, 10, 90),
-    ('Prensa de piernas', 'Evitar bloquear las rodillas, movimiento completo y controlado', 2130968618, 4, 12, 60),
-    ('Extensión de piernas', 'Ejercicio de aislamiento, lento y con buena contracción', 2130968610, 3, 15, 45);
+    ('Sentadillas', 'Ejercicio básico y completo, debe realizarse con buena técnica y control', "sentadillas", 4, 10, 90),
+    ('Prensa de piernas', 'Evitar bloquear las rodillas, movimiento completo y controlado', "prensa_pierna", 4, 12, 60),
+    ('Extensión de piernas', 'Ejercicio de aislamiento, lento y con buena contracción', "extension_piernas", 3, 15, 45);
 
 -- Asociación de Rutinas y Ejercicios
 

@@ -8,7 +8,7 @@ data class Ejercicio (
     @PrimaryKey(autoGenerate = true) val idEjercicios: Int? = null,
     val nombre: String,
     val descripcion: String? = null,
-    val imagen: Int? = null,
+    val imagenName: String? = null,
     val series: Int? = null,
     val repeticiones: Int? = null,
     val tiempoDescanso: Int? = null
