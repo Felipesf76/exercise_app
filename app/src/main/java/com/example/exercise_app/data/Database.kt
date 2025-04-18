@@ -6,7 +6,7 @@ import com.example.exercise_app.model.Ejercicio
 import com.example.exercise_app.model.Rutina
 import com.example.exercise_app.model.RutinaEjercicio
 
-@Database(entities = [Rutina::class, Ejercicio::class, RutinaEjercicio::class], version = 1)
+@Database(entities = [Rutina::class, Ejercicio::class, RutinaEjercicio::class], version = 2)
 abstract class Database : RoomDatabase(){
 
     abstract val rutinaDao: RutinaDAO

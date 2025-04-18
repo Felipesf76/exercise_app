@@ -20,15 +20,8 @@ import androidx.compose.runtime.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.navigation.NavHostController
+import com.example.exercise_app.model.Ejercicio
 
-data class Ejercicio(
-    val nombre: String,
-    val descripcion: String,
-    val imagenResId: Int,
-    val series: Int,
-    val repeticiones: Int,
-    val descanso: Int
-)
 
 @Composable
 fun TitleSelectExercise() {
@@ -57,13 +50,7 @@ fun TitleSelectExercise() {
 }
 
 @Composable
-fun SelectExerciseView(navController: NavHostController) {
-    val ejercicios = listOf(
-        Ejercicio("Curl con barra", "Ejercicio principal para bíceps...", R.drawable.curl_barra, 4, 10, 60),
-        Ejercicio("Fondos en paralelas", "Ejercicio compuesto, puede hacerse con peso...", R.drawable.fondos_paralelas, 4, 10, 60),
-        Ejercicio("Press de banca", "Ejercicio base para pecho...", R.drawable.press_banca, 4, 8, 90),
-        // Agrega más ejercicios según sea necesario
-    )
+fun SelectExerciseView(navController: NavHostController, ejercicios: List<Ejercicio>) {
 
     //Variables generadas
     var nombreRutina by remember { mutableStateOf("") }
@@ -94,10 +81,10 @@ fun SelectExerciseView(navController: NavHostController) {
                 ExerciseCard(
                     nombre = it.nombre,
                     descripcion = it.descripcion,
-                    imagenResId = it.imagenResId,
+                    imagenResId = it.imagen?: R.drawable.fallback_image,
                     repeticiones = it.repeticiones,
                     series = it.series,
-                    descanso = it.descanso
+                    descanso = it.tiempoDescanso
                 )
             }
 

@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ExerciseCard(
-    nombre: String,
-    descripcion: String,
+    nombre: String?,
+    descripcion: String?,
     imagenResId: Int,
-    repeticiones: Int,
-    series: Int,
-    descanso: Int
+    repeticiones: Int?,
+    series: Int?,
+    descanso: Int?
 ) {
     var isChecked by remember { mutableStateOf(false) }
 
@@ -36,12 +36,14 @@ fun ExerciseCard(
     ) {
         Column(Modifier.padding(12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = nombre,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.weight(1f)
-                )
+                if (nombre != null) {
+                    Text(
+                        text = nombre,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
                 Switch(
                     checked = isChecked,
                     onCheckedChange = {
@@ -65,7 +67,9 @@ fun ExerciseCard(
                         .padding(end = 8.dp)
                 )
                 Column {
-                    Text(text = descripcion, fontSize = 14.sp, maxLines = 4)
+                    if (descripcion != null) {
+                        Text(text = descripcion, fontSize = 14.sp, maxLines = 4)
+                    }
                     Spacer(modifier = Modifier.height(4.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Text("$descanso seg", fontSize = 12.sp)
