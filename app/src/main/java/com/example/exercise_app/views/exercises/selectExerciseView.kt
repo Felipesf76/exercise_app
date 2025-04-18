@@ -1,6 +1,5 @@
 package com.example.exercise_app.views.exercises
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -21,6 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
 import com.example.exercise_app.data.Database
 import com.example.exercise_app.data.RutinaDAO
@@ -29,35 +29,9 @@ import com.example.exercise_app.model.Ejercicio
 import com.example.exercise_app.model.Rutina
 import com.example.exercise_app.model.RutinaEjercicio
 import kotlinx.coroutines.launch
+import com.example.exercise_app.views.components.TitleComponent
 
 
-@Composable
-fun TitleSelectExercise() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = stringResource(R.string.title_home),
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Black
-            )
-        )
-        Text(
-            text = stringResource(R.string.welcome),
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Black
-            )
-        )
-    }
-}
-
-@SuppressLint("RememberReturnType")
 @Composable
 fun SelectExerciseView(navController: NavHostController, db: Database) {
 
@@ -80,18 +54,26 @@ fun SelectExerciseView(navController: NavHostController, db: Database) {
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
-            .background(color = Color.White),
+            .background(color = colorResource(R.color.Primary)),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             //titulo
-            TitleSelectExercise()
+            TitleComponent(
+                //Modificar si es creación o editar
+                stringResource(R.string.create_routine)
+            )
 
             // TextBox
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 value = nombreRutina,
                 onValueChange = { nombreRutina = it },
-                label = { Text("Nombre de rutina:") },
+                label = {
+                    Text(
+                        text = stringResource(R.string.routin_name),
+                        color = colorResource(R.color.Secondary)
+                    )
+                },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -160,9 +142,16 @@ fun SelectExerciseView(navController: NavHostController, db: Database) {
                         db.close()
                     }
                 },
-                modifier = Modifier.align(Alignment.End)
+                modifier = Modifier.align(Alignment.End),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.Success),
+                    contentColor = colorResource(R.color.Primary)
+                )
             ) {
-                Text("Crear rutina")
+                Text(
+                    // HACER LA LÓGICA PARA CREAR O EDITAR RUTINA
+                    text = stringResource(R.string.create_routine)
+                )
             }
         }
     }

@@ -22,12 +22,13 @@ import com.example.exercise_app.R
 import com.example.exercise_app.data.utils.Screen
 import com.example.exercise_app.views.components.ButtonRedirect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 
 @Composable
 fun BoxHomeScreen(navController: NavHostController){
     Column (
         modifier = Modifier
-            .background(color = Color.White)
+            .background(color = colorResource(R.color.Primary))
             .fillMaxWidth()
             .fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceAround,
@@ -54,14 +55,13 @@ fun BoxHomeScreen(navController: NavHostController){
                 Text(
                     text= stringResource(R.string.home_question),
                     style = TextStyle(
-                        color = Color.Black,
+                        color = colorResource(R.color.Secondary),
                         fontSize = 20.sp,
                     )
                 )
                 ButtonRedirect(
                     text = stringResource(R.string.create_routine),
                     onClick = {
-                        // falta página de crear una rutina
                         navController.navigate(Screen.ExerciseScreen.route)
                     })
                 ButtonRedirect(

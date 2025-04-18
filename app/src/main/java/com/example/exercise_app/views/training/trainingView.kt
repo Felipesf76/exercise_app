@@ -10,16 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.exercise_app.R
 import androidx.compose.material3.Text
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
+import com.example.exercise_app.data.utils.Screen
+import com.example.exercise_app.views.components.TitleComponent
 import com.example.exercise_app.views.components.TrainingCard
-import com.example.exercise_app.views.exercises.TitleSelectExercise
 
 data class Exercise(
     val nombre: String,
@@ -29,31 +29,6 @@ data class Exercise(
     val repeticiones: Int,
     val descanso: Int
 )
-
-@Composable
-fun TitleTrainingExercise() {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = stringResource(R.string.title_home),
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Black
-            )
-        )
-        Text(
-            text = stringResource(R.string.welcome),
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Black
-            )
-        )
-    }
-}
 
 @Composable
 fun TrainingView(navController: NavHostController) {
@@ -72,9 +47,10 @@ fun TrainingView(navController: NavHostController) {
             .background(color = Color.White)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            //titulo
-            TitleSelectExercise()
-
+            TitleComponent(
+                //NOMBRE DE LA RUTINA
+                title = "Nombre de la rutina"
+            )
 
             //exercise list
             Spacer(modifier = Modifier.height(16.dp))
@@ -89,19 +65,19 @@ fun TrainingView(navController: NavHostController) {
                 )
             }
 
-            //terminar entrenamiento buttom
+            //terminar entrenamiento button
             Button(
                 onClick = {
-
-                    Log.d("Entrenamiento Finalizado", "Entrenamiento Finalizado")
+                    navController.navigate(Screen.HomeScreen.route)
                 },
-                modifier = Modifier.align(Alignment.End)
+                modifier = Modifier.align(Alignment.End),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.Delete),
+                    contentColor = colorResource(R.color.Primary)
+                )
             ) {
                 Text(
-                    text = "Terminar Entrenamiento",
-                    style = TextStyle(
-                            color = Color.Black
-                        )
+                    text = stringResource(R.string.finish_training)
                 )
             }
         }

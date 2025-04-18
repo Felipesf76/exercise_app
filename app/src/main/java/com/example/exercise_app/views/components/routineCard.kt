@@ -1,32 +1,44 @@
 package com.example.exercise_app.views.components
 
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.exercise_app.data.utils.Screen
+import androidx.compose.ui.res.stringResource
+import com.example.exercise_app.R
 
 @Composable
-fun RoutineCard(navController: NavHostController, routineName: String) {
+fun RoutineCard(
+    navController: NavHostController,
+    routineName: String
+) {
     Card(
-        border = BorderStroke(1.dp, Color.Black),
+        onClick = {
+            navController.navigate(Screen.TrainingScreen.route)
+        },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF5F5F5)
+            containerColor = colorResource(R.color.third)
         ),
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
+            .shadow(
+                elevation = 8.dp,
+                shape = MaterialTheme.shapes.medium
+            )
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -37,23 +49,41 @@ fun RoutineCard(navController: NavHostController, routineName: String) {
                 modifier = Modifier
                     .weight(1f)
             ) {
-                Text(text = routineName, fontSize = 18.sp, color = Color.Black)
+                Text(
+                    text = routineName,
+                    fontSize = 18.sp,
+                    color = colorResource(R.color.Secondary)
+                )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.padding(top = 4.dp)
                 ) {
                     Button(
-                        onClick = { Log.d("RoutineCard", "Editando $routineName") },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5))
+                        onClick = {
+                            Log.d("RoutineCard", "Editando $routineName")
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(R.color.Edit),
+                            contentColor = colorResource(R.color.Primary)
+                        )
                     ) {
-                        Text("EDITAR", color = Color.White)
+                        Text(
+                            stringResource(R.string.edit)
+                        )
                     }
 
                     Button(
-                        onClick = { Log.d("RoutineCard", "Eliminando $routineName") },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF44336))
+                        onClick = {
+                            Log.d("RoutineCard", "Eliminando $routineName")
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(R.color.Delete),
+                            contentColor = colorResource(R.color.Primary)
+                        )
                     ) {
-                        Text("ELIMINAR", color = Color.White)
+                        Text(
+                            text = stringResource(R.string.delete)
+                        )
                     }
                 }
             }
@@ -64,8 +94,9 @@ fun RoutineCard(navController: NavHostController, routineName: String) {
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Default.ArrowForward,
-                    contentDescription = "Iniciar",
+                    Icons.AutoMirrored.Outlined.ArrowForward,
+                    contentDescription = stringResource(R.string.go_execise),
+                    tint = colorResource(R.color.Secondary)
                 )
             }
         }
