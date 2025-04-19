@@ -18,11 +18,15 @@ import androidx.navigation.NavHostController
 import com.example.exercise_app.data.utils.Screen
 import androidx.compose.ui.res.stringResource
 import com.example.exercise_app.R
+import com.example.exercise_app.data.Database
+import com.example.exercise_app.data.utils.withArgs
+import com.example.exercise_app.model.Rutina
 
 @Composable
 fun RoutineCard(
     navController: NavHostController,
-    routineName: String
+    routine: Rutina,
+    db: Database
 ) {
     Card(
         onClick = {
@@ -50,7 +54,7 @@ fun RoutineCard(
                     .weight(1f)
             ) {
                 Text(
-                    text = routineName,
+                    text = routine.nombre,
                     fontSize = 18.sp,
                     color = colorResource(R.color.Secondary)
                 )
@@ -60,7 +64,7 @@ fun RoutineCard(
                 ) {
                     Button(
                         onClick = {
-                            Log.d("RoutineCard", "Editando $routineName")
+                            //Log.d("RoutineCard", "Editando $routineName")
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = colorResource(R.color.Edit),
@@ -74,7 +78,7 @@ fun RoutineCard(
 
                     Button(
                         onClick = {
-                            Log.d("RoutineCard", "Eliminando $routineName")
+                            //Log.d("RoutineCard", "Eliminando $routineName")
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = colorResource(R.color.Delete),
@@ -90,7 +94,9 @@ fun RoutineCard(
 
             IconButton(
                 onClick = {
-                    navController.navigate(Screen.TrainingScreen.route)
+                    routine.idRutinas?.let { id ->
+                        navController.navigate(Screen.TrainingScreen.withArgs(id))
+                    }
                 }
             ) {
                 Icon(

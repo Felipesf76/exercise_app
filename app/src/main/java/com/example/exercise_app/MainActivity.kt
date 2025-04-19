@@ -19,6 +19,8 @@ import androidx.navigation.compose.composable
 import com.example.exercise_app.data.utils.Screen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.room.Room
 import com.example.exercise_app.data.Database
 import com.example.exercise_app.model.Ejercicio
@@ -65,14 +67,18 @@ class MainActivity : ComponentActivity() {
                             BoxHomeScreen(navController)
                         }
                         composable(route = Screen.RoutineScreen.route) {
-                            ManageRoutineView(navController)
+                            ManageRoutineView(navController, db = db)
                         }
                         composable(route = Screen.ExerciseScreen.route) {
                             SelectExerciseView(navController, db = db, idRutina = 14)
 
                         }
-                        composable(route = Screen.TrainingScreen.route) {
-                            TrainingView(navController)
+                        composable(
+                            route = Screen.TrainingScreen.route + "/{rutinaId}",
+                            arguments = listOf(navArgument("rutinaId") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            val rutinaId = backStackEntry.arguments?.getInt("rutinaId") ?: 0
+                            TrainingView(navController = navController, db = db, rutinaId = rutinaId)
                         }
                     }
 

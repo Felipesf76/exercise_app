@@ -6,3 +6,12 @@ sealed class Screen (val route: String) {
     data object RoutineScreen : Screen (route = "routine_screen")
     data object ExerciseScreen : Screen (route = "exercise_screen")
 }
+
+fun Screen.withArgs(vararg args: Any): String {
+    return buildString {
+        append(this@withArgs.route)
+        args.forEach { arg ->
+            append("/$arg")
+        }
+    }
+}

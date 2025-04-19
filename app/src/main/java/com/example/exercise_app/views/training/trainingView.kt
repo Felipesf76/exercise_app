@@ -15,31 +15,49 @@ import com.example.exercise_app.R
 import androidx.compose.material3.Text
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
+import com.example.exercise_app.data.Database
+import com.example.exercise_app.model.Ejercicio
 import com.example.exercise_app.data.utils.Screen
 import com.example.exercise_app.views.components.TitleComponent
 import com.example.exercise_app.views.components.TrainingCard
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 data class Exercise(
     val nombre: String,
     val descripcion: String,
-    val imagenResId: Int,
+    val imagenResId: String,
     val series: Int,
     val repeticiones: Int,
     val descanso: Int
 )
 
 @Composable
-fun TrainingView(navController: NavHostController) {
-    val ejercicios = listOf(
-        Exercise("Curl con barra", "Ejercicio principal para bíceps...", R.drawable.curl_barra, 4, 10, 60),
-        Exercise("Fondos en paralelas", "Ejercicio compuesto, puede hacerse con peso...", R.drawable.fondos_paralelas, 4, 10, 60),
-        Exercise("Press de banca", "Ejercicio base para pecho...", R.drawable.press_banca, 4, 8, 90),
-        // Agrega más ejercicios según sea necesario
-    )
-
+fun TrainingView(navController: NavHostController,db: Database, rutinaId: Int) {
+    var exercises by remember { mutableStateOf<List<Ejercicio>>(emptyList()) }
     val scrollState = rememberScrollState()
+
+    fun loadExercisesbyRoutine() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val loaded = db.rutinaEjercicioDAO.getEjerciciosPorRutina(rutinaId)
+            withContext(Dispatchers.Main) {
+                exercises = loaded
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        loadExercisesbyRoutine()
+    }
 
     Column(
         modifier = Modifier
@@ -54,14 +72,14 @@ fun TrainingView(navController: NavHostController) {
 
             //exercise list
             Spacer(modifier = Modifier.height(16.dp))
-            ejercicios.forEach {
+            exercises.forEach {
                 TrainingCard(
                     nombre = it.nombre,
-                    descripcion = it.descripcion,
-                    imagenResId = it.imagenResId,
-                    repeticiones = it.repeticiones,
-                    series = it.series,
-                    descanso = it.descanso
+                    descripcion = it.descripcion.toString(),
+                    imagenResId = it.imagenName.toString(),
+                    series = it.series ?: 0,
+                    repeticiones = it.repeticiones ?: 0,
+                    descanso = it.tiempoDescanso ?: 0
                 )
             }
 
