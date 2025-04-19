@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                             ManageRoutineView(navController)
                         }
                         composable(route = Screen.ExerciseScreen.route) {
-                            SelectExerciseView(navController, db = db)
+                            SelectExerciseView(navController, db = db, idRutina = 14)
 
                         }
                         composable(route = Screen.TrainingScreen.route) {

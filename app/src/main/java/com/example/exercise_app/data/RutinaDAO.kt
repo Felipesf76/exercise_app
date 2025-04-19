@@ -25,4 +25,7 @@ interface RutinaDAO {
 
     @Delete
     suspend fun deleteRutina(rutina : Rutina)
+
+    @Query("SELECT COUNT(*) FROM rutinas WHERE nombre = :nombreRutina")
+    suspend fun existeRutinaPorNombre(nombreRutina: String): Int
 }

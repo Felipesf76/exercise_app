@@ -27,9 +27,10 @@ fun ExerciseCard(
     repeticiones: Int?,
     series: Int?,
     descanso: Int?,
+    isRelated: Boolean? = false,
     onCheckedChange: (Boolean) -> Unit
 ) {
-    var isChecked by remember { mutableStateOf(false) }
+    var isChecked by remember { mutableStateOf(isRelated!!) }
 
     Card(
         modifier = Modifier
