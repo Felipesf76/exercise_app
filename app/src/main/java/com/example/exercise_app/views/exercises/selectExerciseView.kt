@@ -81,8 +81,10 @@ fun SelectExerciseView(
         Column(modifier = Modifier.padding(16.dp)) {
             //titulo
             TitleComponent(
-                //Modificar si es creación o editar
-                stringResource(R.string.create_routine)
+                if (idRutina == null)
+                    stringResource(R.string.create_routine)
+                else
+                    stringResource(R.string.edit_routine)
             )
 
             // TextBox
@@ -232,12 +234,12 @@ fun SelectExerciseView(
                 )
             ) {
                 Text(
-                    // HACER LA LÓGICA PARA CREAR O EDITAR RUTINA
-                    text = stringResource(R.string.create_routine)
+                    text = if (idRutina == null)
+                        stringResource(R.string.create_routine)
+                    else
+                        stringResource(R.string.edit_routine)
                 )
             }
         }
     }
-
-
 }

@@ -70,8 +70,15 @@ class MainActivity : ComponentActivity() {
                             ManageRoutineView(navController, db = db)
                         }
                         composable(route = Screen.ExerciseScreen.route) {
-                            SelectExerciseView(navController, db = db, idRutina = 14)
+                            SelectExerciseView(navController, db = db, idRutina = null)
 
+                        }
+                        composable(
+                            route = Screen.EditRoutineScreen.route + "/{rutinaId}",
+                            arguments = listOf(navArgument("rutinaId") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            val rutinaId = backStackEntry.arguments?.getInt("rutinaId") ?: 0
+                            SelectExerciseView(navController = navController, db = db, idRutina = rutinaId)
                         }
                         composable(
                             route = Screen.TrainingScreen.route + "/{rutinaId}",

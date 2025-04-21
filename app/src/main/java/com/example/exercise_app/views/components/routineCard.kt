@@ -1,7 +1,9 @@
 package com.example.exercise_app.views.components
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForward
@@ -21,6 +23,11 @@ import com.example.exercise_app.R
 import com.example.exercise_app.data.Database
 import com.example.exercise_app.data.utils.withArgs
 import com.example.exercise_app.model.Rutina
+import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+
 
 @Composable
 fun RoutineCard(
@@ -28,6 +35,9 @@ fun RoutineCard(
     routine: Rutina,
     db: Database
 ) {
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     Card(
         onClick = {
             navController.navigate(Screen.TrainingScreen.route)
@@ -64,7 +74,9 @@ fun RoutineCard(
                 ) {
                     Button(
                         onClick = {
-                            //Log.d("RoutineCard", "Editando $routineName")
+                            routine.idRutinas?.let { id ->
+                                navController.navigate(Screen.EditRoutineScreen.withArgs(id))
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = colorResource(R.color.Edit),
@@ -75,18 +87,43 @@ fun RoutineCard(
                             stringResource(R.string.edit)
                         )
                     }
-
+//                    Button(
+//                        onClick = {
+//                        //Log.d("RoutineCard", "Eliminando $routineName")
+//                    },
+//                        colors = ButtonDefaults.buttonColors(
+//                            containerColor = colorResource(R.color.Delete),
+//                            contentColor = colorResource(R.color.Primary)
+//                        )
+//                    )
                     Button(
                         onClick = {
-                            //Log.d("RoutineCard", "Eliminando $routineName")
+                            scope.launch {
+                                if (routine.idRutinas != null) {
+                                    val relacionados = db.rutinaEjercicioDAO.getEjerciciosPorRutina(routine.idRutinas)
+                                    if (relacionados.isEmpty()) {
+                                        db.rutinaDao.deleteRutina(routine)
+                                        Toast.makeText(context, "Rutina eliminada correctamente", Toast.LENGTH_SHORT).show()
+                                        //navController.popBackStack() // Vuelve a la pantalla anterior
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "No se puede eliminar la rutina. Aún tiene ejercicios relacionados.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = colorResource(R.color.Delete),
                             contentColor = colorResource(R.color.Primary)
-                        )
-                    ) {
+                        ),
+                        //modifier = Modifier.align(Alignment.End)
+                    )
+                    {
                         Text(
-                            text = stringResource(R.string.delete)
+                            stringResource(R.string.delete)
                         )
                     }
                 }

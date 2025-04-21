@@ -1,6 +1,7 @@
 package com.example.exercise_app.views.components
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import com.example.exercise_app.R
@@ -32,11 +33,13 @@ fun TrainingCard(
     imagenResId: String,
     repeticiones: Int,
     series: Int,
-    descanso: Int
-) {
+    descanso: Int,
+    onEvaluar: (seriesIngresadas: Int, repeticionesIngresadas: Int, pesoIngresado: Float) -> Unit) {
     var numSeries by remember { mutableStateOf(0) }
     var numRep by remember { mutableStateOf(0) }
     var numPeso by remember { mutableStateOf(0f) }
+    val context = LocalContext.current
+
 
     Card(
         modifier = Modifier
@@ -193,9 +196,8 @@ fun TrainingCard(
                 // Botón Evaluar
                 Button(
                     onClick = {
-                        Log.d(
-                            "ExerciseCard", "Series realizada: $numSeries\nRepeticiones: $numRep\nPeso: $numPeso kg"
-                        )
+                        onEvaluar(numSeries, numRep, numPeso)
+                        Toast.makeText(context, "Evaluando ejercicio...", Toast.LENGTH_SHORT).show()
                     },
                     modifier = Modifier
                         .align(Alignment.End),
@@ -204,9 +206,7 @@ fun TrainingCard(
                         contentColor = colorResource(R.color.Primary)
                     )
                 ) {
-                    Text(
-                        text = stringResource(R.string.assess),
-                    )
+                    Text(text = stringResource(R.string.assess))
                 }
             }
         }
