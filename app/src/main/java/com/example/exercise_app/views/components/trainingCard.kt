@@ -31,9 +31,9 @@ fun TrainingCard(
     series: Int,
     descanso: Int
 ) {
-    var numSeries by remember { mutableStateOf(0) }
-    var numRep by remember { mutableStateOf(0) }
-    var numPeso by remember { mutableStateOf(0f) }
+    var numSeries by remember { mutableStateOf("") }
+    var numRep by remember { mutableStateOf("") }
+    var numPeso by remember { mutableStateOf("") }
 
     Card(
         modifier = Modifier
@@ -130,10 +130,9 @@ fun TrainingCard(
             Column {
                 // Series input
                 OutlinedTextField(
-                    value = numSeries.toString(),
+                    value = numSeries,
                     onValueChange = {
-                        value ->
-                        numSeries = value.toIntOrNull() ?: 0
+                        numSeries = it
                     },
                     label = {
                         Text(
@@ -150,9 +149,9 @@ fun TrainingCard(
 
                 // Repeticiones input
                 OutlinedTextField(
-                    value = numRep.toString(),
-                    onValueChange = { value ->
-                        numRep = value.toIntOrNull() ?: 0
+                    value = numRep,
+                    onValueChange = {
+                        numRep = it
                     },
                     label = {
                         Text(
@@ -169,9 +168,9 @@ fun TrainingCard(
 
                 // Peso input
                 OutlinedTextField(
-                    value = numPeso.toString(),
-                    onValueChange = { value ->
-                        numPeso = value.toFloatOrNull() ?: 0f
+                    value = numPeso,
+                    onValueChange = {
+                        numPeso = it
                     },
                     label = {
                         Text(

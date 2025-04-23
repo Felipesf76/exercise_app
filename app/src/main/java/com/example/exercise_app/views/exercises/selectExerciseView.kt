@@ -17,13 +17,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.navigation.NavHostController
 import com.example.exercise_app.data.Database
+import com.example.exercise_app.data.utils.Screen
 import com.example.exercise_app.model.Ejercicio
 import com.example.exercise_app.model.Rutina
 import com.example.exercise_app.model.RutinaEjercicio
 import kotlinx.coroutines.launch
 import com.example.exercise_app.views.components.TitleComponent
+import com.example.exercise_app.views.components.snackbar.SnackbarController
+import com.example.exercise_app.views.components.snackbar.SnackbarEvent
 
 
 @Composable
@@ -96,6 +100,7 @@ fun SelectExerciseView(
                         color = colorResource(R.color.Secondary)
                     )
                 },
+                textStyle = TextStyle(color = colorResource(R.color.Secondary)),
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -169,13 +174,24 @@ fun SelectExerciseView(
 
                                 //Evalua si hay error al evaluar un ejercicio
                                 if (resultado == -1L) {
-                                    Log.e("Insert RutinaEjercicio", "Ya existe la relación rutina=${idRutina} y ejercicio=${it.nombre}")
-                                    //********Error Message****
+                                    scope.launch {
+                                        SnackbarController.sendEvent(
+                                            event = SnackbarEvent(
+                                                message = "Error: Ya existe la relación rutina=${idRutina} y ejercicio=${it.nombre}"
+                                            )
+                                        )
+                                        navController.navigate(Screen.RoutineScreen.route)
+                                    }
 
                                 } else {
-
-                                    Log.d("Insert RutinaEjercicio", "Insertado correctamente: rutina=${idRutina}, ejercicio=${it.nombre}")
-                                    //********Success Message -> Return to Home****
+                                    scope.launch {
+                                        SnackbarController.sendEvent(
+                                            event = SnackbarEvent(
+                                                message = "Rutina editada exitosamente!"
+                                            )
+                                        )
+                                        navController.navigate(Screen.RoutineScreen.route)
+                                    }
                                 }
                             }
 
@@ -186,8 +202,13 @@ fun SelectExerciseView(
                             val yaExiste = db.rutinaDao.existeRutinaPorNombre(nombreRutina)
                             Log.d("Rutina", "Resultado de existeRutinaPorNombre: $yaExiste")
                             if (yaExiste > 0) {
-                                Log.e("Rutina", "Rutina no puede crearse porque ya existe")
-                                //********Error Message****
+                                scope.launch {
+                                    SnackbarController.sendEvent(
+                                        event = SnackbarEvent(
+                                            message = "Error: La rutina ya existe"
+                                        )
+                                    )
+                                }
 
                             } else {
                                 //Inserta un nuevo item
@@ -198,9 +219,13 @@ fun SelectExerciseView(
                                 val rutinaGuardada = db.rutinaDao.getRutinaPorId(rutinaId)
 
                                 if (rutinaGuardada.isEmpty()) {
-                                    Log.e("Rutina", "Error: No se encontró la rutina con ID $rutinaId")
-                                    //********Error Message****
-
+                                    scope.launch {
+                                        SnackbarController.sendEvent(
+                                            event = SnackbarEvent(
+                                                message = "Error: No se encontró la rutina"
+                                            )
+                                        )
+                                    }
                                 } else {
 
                                     //agregando ejercicios a la rutina
@@ -211,13 +236,22 @@ fun SelectExerciseView(
 
                                         //Evalua si hay error al evaluar un ejercicio
                                         if (resultado == -1L) {
-                                            Log.e("Insert RutinaEjercicio", "Ya existe la relación rutina=${rutinaId} y ejercicio=${it.nombre}")
-                                            //********Error Message****
-
+                                            scope.launch {
+                                                SnackbarController.sendEvent(
+                                                    event = SnackbarEvent(
+                                                        message = "Error: La rutina ya existe"
+                                                    )
+                                                )
+                                            }
                                         } else {
-
-                                            Log.d("Insert RutinaEjercicio", "Insertado correctamente: rutina=${rutinaId}, ejercicio=${it.nombre}")
-                                            //********Success Message -> Return to Home****
+                                            scope.launch {
+                                                SnackbarController.sendEvent(
+                                                    event = SnackbarEvent(
+                                                        message = "Rutina creada"
+                                                    )
+                                                )
+                                                navController.navigate(Screen.RoutineScreen.route)
+                                            }
                                         }
                                     }
                                 }
@@ -231,10 +265,15 @@ fun SelectExerciseView(
                     contentColor = colorResource(R.color.Primary)
                 )
             ) {
-                Text(
-                    // HACER LA LÓGICA PARA CREAR O EDITAR RUTINA
-                    text = stringResource(R.string.create_routine)
-                )
+                if (idRutina == null){
+                    Text(
+                        text = stringResource(R.string.create_routine)
+                    )
+                } else {
+                    Text(
+                        text = stringResource(R.string.edit_routine)
+                    )
+                }
             }
         }
     }
