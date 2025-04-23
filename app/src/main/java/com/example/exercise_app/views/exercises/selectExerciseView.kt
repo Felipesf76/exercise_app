@@ -1,6 +1,5 @@
 package com.example.exercise_app.views.exercises
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -15,12 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.navigation.NavHostController
 import com.example.exercise_app.data.Database
 import com.example.exercise_app.data.utils.Screen
+import com.example.exercise_app.data.utils.withArgs
 import com.example.exercise_app.model.Ejercicio
 import com.example.exercise_app.model.Rutina
 import com.example.exercise_app.model.RutinaEjercicio
@@ -34,7 +33,7 @@ import com.example.exercise_app.views.components.snackbar.SnackbarEvent
 fun SelectExerciseView(
     navController: NavHostController,
     db: Database,
-    idRutina: Int? = null // null = crear, no null = editar
+    idRutina: Int? = null
 
 ) {
 
@@ -45,12 +44,8 @@ fun SelectExerciseView(
     var nombreRutina by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
-    val context = LocalContext.current
-
 
     LaunchedEffect(true) {
-
-
         //Check if idRutina es diferente a nulo
         if (idRutina != null) {
             val rutina = db.rutinaDao.getRutinaPorId(idRutina)
@@ -73,7 +68,6 @@ fun SelectExerciseView(
             // Obtener todos los ejercicios disponibles
             ejercicios.value = db.ejercicioDao.getEjercicios()
         }
-
     }
 
 
@@ -110,18 +104,11 @@ fun SelectExerciseView(
             Spacer(modifier = Modifier.height(16.dp))
             ejercicios.value.forEach { it ->
                 val isSelected = ejerciciosSeleccionados.any { sel -> sel.idEjercicios == it.idEjercicios }
-                val imagenNombre = it.imagenName
-                val imageResId   = remember(imagenNombre) {
-                    imagenNombre?.let {
-                        context.resources.getIdentifier(it, "drawable", context.packageName)
-                    } ?: R.drawable.fallback_image
-                }
-
 
                 ExerciseCard(
                     nombre = it.nombre,
                     descripcion = it.descripcion,
-                    imagenResId = imageResId,
+                    imagenResId = it.imagenName.toString(),
                     repeticiones = it.repeticiones,
                     series = it.series,
                     descanso = it.tiempoDescanso,
@@ -129,10 +116,8 @@ fun SelectExerciseView(
                     onCheckedChange = { isChecked ->
                         if (isChecked) {
                             ejerciciosSeleccionados.add(it)
-                            Log.d("ExerciseCard", "${it.nombre} agregado")
                         } else {
                             ejerciciosSeleccionados.remove(it)
-                            Log.d("ExerciseCard", "${it.idEjercicios} eliminado")
                         }
                     }
                 )
@@ -141,9 +126,6 @@ fun SelectExerciseView(
             //submit buttom
             Button(
                 onClick = {
-
-                    Log.d("Rutina", "Intentando crear rutina con nombre: $nombreRutina")
-
                     scope.launch {
                         /** Logica de Editar**/
 
@@ -151,58 +133,64 @@ fun SelectExerciseView(
                             //generamos lista con ids para elimina
                             val idsSeleccionados = ejerciciosSeleccionados.mapNotNull { it.idEjercicios }
 
-                            //Elimina  itemes si no existe
-                            if (idsSeleccionados.isNotEmpty()) {
-                                db.rutinaEjercicioDAO.eliminarRelacionesNoSeleccionadas(idRutina, idsSeleccionados)
+                            //Elimina  items si no existe
+                            if (idsSeleccionados.isEmpty()) {
+                                scope.launch {
+                                    SnackbarController.sendEvent(
+                                        event = SnackbarEvent(
+                                            message = "Error: No se puede editar una rutina sin ejercicios"
+                                        )
+                                    )
+                                    navController.navigate(Screen.EditRoutineScreen.withArgs(idRutina))
+                                }
                             } else {
+                                db.rutinaEjercicioDAO.eliminarRelacionesNoSeleccionadas(idRutina, idsSeleccionados)
                                 // Si no hay seleccionados, eliminamos TODAS las relaciones
-                                db.rutinaEjercicioDAO.eliminarTodasLasRelacionesDeRutina(idRutina)
-                            }
-
-                            //actualiza el nombre de la rutina
-                            val rutinaActualizada = Rutina(
-                                idRutina,
-                                nombre = nombreRutina
-                            )
-
-                            db.rutinaDao.upsertRutina(rutinaActualizada)
-                            Log.d("Rutina", "Rutina actualizada: ${rutinaActualizada}")
-
-                            //agregando ejercicios a la rutina
-                            ejerciciosSeleccionados.forEach{ it ->
-                                val resultado = db.rutinaEjercicioDAO.insertRutinaEjercicio(
-                                    RutinaEjercicio(rutina_id = idRutina, ejercicio_id = it.idEjercicios!!)
+                                //actualiza el nombre de la rutina
+                                val rutinaActualizada = Rutina(
+                                    idRutina,
+                                    nombre = nombreRutina
                                 )
 
-                                //Evalua si hay error al evaluar un ejercicio
-                                if (resultado == -1L) {
-                                    scope.launch {
-                                        SnackbarController.sendEvent(
-                                            event = SnackbarEvent(
-                                                message = "Error: Ya existe la relación rutina=${idRutina} y ejercicio=${it.nombre}"
-                                            )
-                                        )
-                                        navController.navigate(Screen.RoutineScreen.route)
-                                    }
+                                db.rutinaDao.upsertRutina(rutinaActualizada)
 
-                                } else {
-                                    scope.launch {
-                                        SnackbarController.sendEvent(
-                                            event = SnackbarEvent(
-                                                message = "Rutina editada exitosamente!"
+                                //agregando ejercicios a la rutina
+                                ejerciciosSeleccionados.forEach{ it ->
+                                    val resultado = db.rutinaEjercicioDAO.insertRutinaEjercicio(
+                                        RutinaEjercicio(rutina_id = idRutina, ejercicio_id = it.idEjercicios!!)
+                                    )
+
+                                    //Evalua si hay error al evaluar un ejercicio
+                                    if (resultado == -1L) {
+                                        scope.launch {
+                                            SnackbarController.sendEvent(
+                                                event = SnackbarEvent(
+                                                    message = "Error: Ya existe la relación de la rutina y ejercicio"
+                                                )
                                             )
-                                        )
-                                        navController.navigate(Screen.RoutineScreen.route)
+                                            navController.navigate(Screen.RoutineScreen.route)
+                                        }
+
+                                    } else {
+                                        scope.launch {
+                                            SnackbarController.sendEvent(
+                                                event = SnackbarEvent(
+                                                    message = "Rutina editada exitosamente!"
+                                                )
+                                            )
+                                            navController.navigate(Screen.RoutineScreen.route)
+                                        }
                                     }
                                 }
                             }
+
+
 
                         }else{
                             /** Logica de Crear**/
 
                             //valida si el nombre de la rutina ya existe
                             val yaExiste = db.rutinaDao.existeRutinaPorNombre(nombreRutina)
-                            Log.d("Rutina", "Resultado de existeRutinaPorNombre: $yaExiste")
                             if (yaExiste > 0) {
                                 scope.launch {
                                     SnackbarController.sendEvent(
@@ -214,45 +202,57 @@ fun SelectExerciseView(
 
                             } else {
                                 //Inserta un nuevo item
-                                val rutinaId = db.rutinaDao.insertRutina(Rutina(nombre = nombreRutina)).toInt()
-                                Log.d("Rutina", "ID generado: $rutinaId")
-
-                                //valida que la rutina ya este disponible en db
-                                val rutinaGuardada = db.rutinaDao.getRutinaPorId(rutinaId)
-
-                                if (rutinaGuardada.isEmpty()) {
+                                if (ejerciciosSeleccionados.isEmpty()){
                                     scope.launch {
                                         SnackbarController.sendEvent(
                                             event = SnackbarEvent(
-                                                message = "Error: No se encontró la rutina"
+                                                message = "Error: No se puede crear una rutina sin ejercicios"
                                             )
                                         )
+                                        navController.navigate(Screen.ExerciseScreen.route)
                                     }
                                 } else {
+                                    val rutinaId = db.rutinaDao.insertRutina(Rutina(nombre = nombreRutina)).toInt()
 
-                                    //agregando ejercicios a la rutina
-                                    ejerciciosSeleccionados.forEach{ it ->
-                                        val resultado = db.rutinaEjercicioDAO.insertRutinaEjercicio(
-                                            RutinaEjercicio(rutina_id = rutinaId, ejercicio_id = it.idEjercicios!!)
-                                        )
 
-                                        //Evalua si hay error al evaluar un ejercicio
-                                        if (resultado == -1L) {
-                                            scope.launch {
-                                                SnackbarController.sendEvent(
-                                                    event = SnackbarEvent(
-                                                        message = "Error: La rutina ya existe"
-                                                    )
+
+                                    //valida que la rutina ya este disponible en db
+                                    val rutinaGuardada = db.rutinaDao.getRutinaPorId(rutinaId)
+
+                                    if (rutinaGuardada.isEmpty()) {
+                                        scope.launch {
+                                            SnackbarController.sendEvent(
+                                                event = SnackbarEvent(
+                                                    message = "Error: No se encontró la rutina"
                                                 )
-                                            }
-                                        } else {
-                                            scope.launch {
-                                                SnackbarController.sendEvent(
-                                                    event = SnackbarEvent(
-                                                        message = "Rutina creada"
+                                            )
+                                        }
+                                    } else {
+
+                                        //agregando ejercicios a la rutina
+                                        ejerciciosSeleccionados.forEach{ it ->
+                                            val resultado = db.rutinaEjercicioDAO.insertRutinaEjercicio(
+                                                RutinaEjercicio(rutina_id = rutinaId, ejercicio_id = it.idEjercicios!!)
+                                            )
+
+                                            //Evalua si hay error al evaluar un ejercicio
+                                            if (resultado == -1L) {
+                                                scope.launch {
+                                                    SnackbarController.sendEvent(
+                                                        event = SnackbarEvent(
+                                                            message = "Error: La rutina ya existe"
+                                                        )
                                                     )
-                                                )
-                                                navController.navigate(Screen.RoutineScreen.route)
+                                                }
+                                            } else {
+                                                scope.launch {
+                                                    SnackbarController.sendEvent(
+                                                        event = SnackbarEvent(
+                                                            message = "Rutina creada"
+                                                        )
+                                                    )
+                                                    navController.navigate(Screen.RoutineScreen.route)
+                                                }
                                             }
                                         }
                                     }

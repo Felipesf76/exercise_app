@@ -11,7 +11,7 @@ import com.example.exercise_app.model.Rutina
 @Dao
 interface RutinaDAO {
 
-    @Query("SELECT * FROM rutinas")
+    @Query("SELECT * FROM rutinas ORDER BY idRutinas DESC")
     suspend fun getRutinas(): List<Rutina>
 
     @Query("SELECT * FROM rutinas WHERE idRutinas = :id")

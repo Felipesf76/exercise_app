@@ -1,7 +1,6 @@
 package com.example.exercise_app
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -27,10 +26,8 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.room.Room
 import com.example.exercise_app.data.Database
-import com.example.exercise_app.model.Ejercicio
 import com.example.exercise_app.views.components.snackbar.ObserveAsEvents
 import com.example.exercise_app.views.components.snackbar.SnackbarController
-import com.example.exercise_app.views.components.snackbar.SnackbarEvent
 import kotlinx.coroutines.launch
 
 
@@ -120,7 +117,6 @@ class MainActivity : ComponentActivity() {
                             TrainingView(navController = navController, db = db, rutinaId = rutinaId)
                         }
                     }
-
                 }
             }
         }

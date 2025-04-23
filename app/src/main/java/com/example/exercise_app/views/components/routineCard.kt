@@ -1,9 +1,6 @@
 package com.example.exercise_app.views.components
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForward
@@ -12,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,9 +20,10 @@ import com.example.exercise_app.data.Database
 import com.example.exercise_app.data.utils.withArgs
 import com.example.exercise_app.model.Rutina
 import kotlinx.coroutines.launch
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import com.example.exercise_app.views.components.snackbar.SnackbarController
+import com.example.exercise_app.views.components.snackbar.SnackbarEvent
 
 
 @Composable
@@ -36,11 +33,12 @@ fun RoutineCard(
     db: Database
 ) {
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     Card(
         onClick = {
-            navController.navigate(Screen.TrainingScreen.route)
+            routine.idRutinas?.let { id ->
+                navController.navigate(Screen.TrainingScreen.withArgs(id))
+            }
         },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
@@ -87,15 +85,6 @@ fun RoutineCard(
                             stringResource(R.string.edit)
                         )
                     }
-//                    Button(
-//                        onClick = {
-//                        //Log.d("RoutineCard", "Eliminando $routineName")
-//                    },
-//                        colors = ButtonDefaults.buttonColors(
-//                            containerColor = colorResource(R.color.Delete),
-//                            contentColor = colorResource(R.color.Primary)
-//                        )
-//                    )
                     Button(
                         onClick = {
                             scope.launch {
@@ -103,14 +92,22 @@ fun RoutineCard(
                                     val relacionados = db.rutinaEjercicioDAO.getEjerciciosPorRutina(routine.idRutinas)
                                     if (relacionados.isEmpty()) {
                                         db.rutinaDao.deleteRutina(routine)
-                                        Toast.makeText(context, "Rutina eliminada correctamente", Toast.LENGTH_SHORT).show()
-                                        //navController.popBackStack() // Vuelve a la pantalla anterior
+                                        scope.launch {
+                                            SnackbarController.sendEvent(
+                                                event = SnackbarEvent(
+                                                    message = "Rutina eliminada correctamente"
+                                                )
+                                            )
+                                            navController.navigate(Screen.RoutineScreen.route)
+                                        }
                                     } else {
-                                        Toast.makeText(
-                                            context,
-                                            "No se puede eliminar la rutina. Aún tiene ejercicios relacionados.",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        scope.launch {
+                                            SnackbarController.sendEvent(
+                                                event = SnackbarEvent(
+                                                    message = "No se puede eliminar la rutina. Aún tiene ejercicios relacionados"
+                                                )
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -119,7 +116,6 @@ fun RoutineCard(
                             containerColor = colorResource(R.color.Delete),
                             contentColor = colorResource(R.color.Primary)
                         ),
-                        //modifier = Modifier.align(Alignment.End)
                     )
                     {
                         Text(
