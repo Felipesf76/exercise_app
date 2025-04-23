@@ -104,8 +104,6 @@ fun RoutineCard(
                         onClick = {
                             scope.launch {
                                 if (routine.idRutinas != null) {
-                                    val relacionados = db.rutinaEjercicioDAO.getEjerciciosPorRutina(routine.idRutinas)
-                                    if (relacionados.isEmpty()) {
                                         db.rutinaDao.deleteRutina(routine)
                                         scope.launch {
                                             SnackbarController.sendEvent(
@@ -115,15 +113,6 @@ fun RoutineCard(
                                             )
                                             navController.navigate(Screen.RoutineScreen.route)
                                         }
-                                    } else {
-                                        scope.launch {
-                                            SnackbarController.sendEvent(
-                                                event = SnackbarEvent(
-                                                    message = "No se puede eliminar la rutina. Aún tiene ejercicios relacionados"
-                                                )
-                                            )
-                                        }
-                                    }
                                 }
                             }
                         },
@@ -131,7 +120,6 @@ fun RoutineCard(
                             containerColor = colorResource(R.color.Delete),
                             contentColor = colorResource(R.color.Primary)
                         ),
-                        //modifier = Modifier.align(Alignment.End)
                     )
                     {
                         Text(
