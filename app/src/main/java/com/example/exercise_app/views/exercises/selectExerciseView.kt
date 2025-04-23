@@ -85,8 +85,10 @@ fun SelectExerciseView(
         Column(modifier = Modifier.padding(16.dp)) {
             //titulo
             TitleComponent(
-                //Modificar si es creación o editar
-                stringResource(R.string.create_routine)
+                if (idRutina == null)
+                    stringResource(R.string.create_routine)
+                else
+                    stringResource(R.string.edit_routine)
             )
 
             // TextBox
@@ -265,18 +267,13 @@ fun SelectExerciseView(
                     contentColor = colorResource(R.color.Primary)
                 )
             ) {
-                if (idRutina == null){
-                    Text(
-                        text = stringResource(R.string.create_routine)
-                    )
-                } else {
-                    Text(
-                        text = stringResource(R.string.edit_routine)
-                    )
-                }
+                Text(
+                    text = if (idRutina == null)
+                        stringResource(R.string.create_routine)
+                    else
+                        stringResource(R.string.edit_routine)
+                )
             }
         }
     }
-
-
 }

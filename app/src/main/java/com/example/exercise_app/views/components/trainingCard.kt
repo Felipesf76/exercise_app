@@ -1,6 +1,7 @@
 package com.example.exercise_app.views.components
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import com.example.exercise_app.R
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,19 +23,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun TrainingCard(
     nombre: String,
     descripcion: String,
-    imagenResId: Int,
+    imagenResId: String,
     repeticiones: Int,
     series: Int,
-    descanso: Int
-) {
-    var numSeries by remember { mutableStateOf("") }
-    var numRep by remember { mutableStateOf("") }
-    var numPeso by remember { mutableStateOf("") }
+    descanso: Int,
+    onEvaluar: (seriesIngresadas: Int, repeticionesIngresadas: Int, pesoIngresado: Float) -> Unit) {
+    var numSeries by remember { mutableStateOf(0) }
+    var numSeriesText by remember { mutableStateOf("") }
+
+    var numRep by remember { mutableStateOf(0) }
+    var numRepText by remember { mutableStateOf("") }
+
+    var numPeso by remember { mutableStateOf(0f) }
+    var numPesoText by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
 
     Card(
         modifier = Modifier
@@ -67,8 +78,10 @@ fun TrainingCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
-                Image(
-                    painter = painterResource(id = imagenResId),
+                val context = LocalContext.current
+
+                AsyncImage(
+                    model = "android.resource://${context.packageName}/drawable/$imagenResId",
                     contentDescription = nombre,
                     modifier = Modifier
                         .size(80.dp)
@@ -130,9 +143,14 @@ fun TrainingCard(
             Column {
                 // Series input
                 OutlinedTextField(
-                    value = numSeries,
-                    onValueChange = {
-                        numSeries = it
+                    value = numSeriesText,
+                    onValueChange = { value ->
+                        if (value.matches(Regex("^\\d*\$"))) { // Solo dígitos
+                            numSeriesText = value
+                            value.toIntOrNull()?.let {
+                                numSeries = it
+                            }
+                        }
                     },
                     label = {
                         Text(
@@ -140,6 +158,7 @@ fun TrainingCard(
                             color = colorResource(R.color.Secondary)
                         )
                     },
+                    placeholder = { Text("Ej: 3", color = colorResource(R.color.Secondary)) },
                     textStyle = TextStyle(color = colorResource(R.color.Secondary)),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
@@ -149,9 +168,14 @@ fun TrainingCard(
 
                 // Repeticiones input
                 OutlinedTextField(
-                    value = numRep,
-                    onValueChange = {
-                        numRep = it
+                    value = numRepText,
+                    onValueChange = { value ->
+                        if (value.matches(Regex("^\\d*\$"))) { // Solo dígitos
+                            numRepText = value
+                            value.toIntOrNull()?.let {
+                                numRep = it
+                            }
+                        }
                     },
                     label = {
                         Text(
@@ -159,6 +183,7 @@ fun TrainingCard(
                             color = Color.Black
                         )
                     },
+                    placeholder = { Text("Ej: 10", color = colorResource(R.color.Secondary)) },
                     textStyle = TextStyle(color = colorResource(R.color.Secondary)),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
@@ -168,15 +193,21 @@ fun TrainingCard(
 
                 // Peso input
                 OutlinedTextField(
-                    value = numPeso,
-                    onValueChange = {
-                        numPeso = it
+                    value = numPesoText,
+                    onValueChange = { value ->
+                        if (value.matches(Regex("^\\d*\\.?\\d{0,2}\$"))) { // Dígitos + punto opcional + hasta 2 decimales
+                            numPesoText = value
+                            value.toFloatOrNull()?.let {
+                                numPeso = it
+                            }
+                        }
                     },
                     label = {
                         Text(
                             text = stringResource(R.string.weight),
                             color = colorResource(R.color.Secondary)
                         )},
+                    placeholder = { Text("Ej: 80.5", color = colorResource(R.color.Secondary)) },
                     textStyle = TextStyle(color = colorResource(R.color.Secondary)),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
@@ -187,9 +218,8 @@ fun TrainingCard(
                 // Botón Evaluar
                 Button(
                     onClick = {
-                        Log.d(
-                            "ExerciseCard", "Series realizada: $numSeries\nRepeticiones: $numRep\nPeso: $numPeso kg"
-                        )
+                        onEvaluar(numSeries, numRep, numPeso)
+                        Toast.makeText(context, "Evaluando ejercicio...", Toast.LENGTH_SHORT).show()
                     },
                     modifier = Modifier
                         .align(Alignment.End),
@@ -198,9 +228,7 @@ fun TrainingCard(
                         contentColor = colorResource(R.color.Primary)
                     )
                 ) {
-                    Text(
-                        text = stringResource(R.string.assess),
-                    )
+                    Text(text = stringResource(R.string.assess))
                 }
             }
         }

@@ -23,6 +23,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.*
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.room.Room
 import com.example.exercise_app.data.Database
 import com.example.exercise_app.model.Ejercicio
@@ -97,14 +99,25 @@ class MainActivity : ComponentActivity() {
                             BoxHomeScreen(navController)
                         }
                         composable(route = Screen.RoutineScreen.route) {
-                            ManageRoutineView(navController)
+                            ManageRoutineView(navController, db = db)
                         }
                         composable(route = Screen.ExerciseScreen.route) {
-                            SelectExerciseView(navController, db = db)
+                            SelectExerciseView(navController, db = db, idRutina = null)
 
                         }
-                        composable(route = Screen.TrainingScreen.route) {
-                            TrainingView(navController)
+                        composable(
+                            route = Screen.EditRoutineScreen.route + "/{rutinaId}",
+                            arguments = listOf(navArgument("rutinaId") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            val rutinaId = backStackEntry.arguments?.getInt("rutinaId") ?: 0
+                            SelectExerciseView(navController = navController, db = db, idRutina = rutinaId)
+                        }
+                        composable(
+                            route = Screen.TrainingScreen.route + "/{rutinaId}",
+                            arguments = listOf(navArgument("rutinaId") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            val rutinaId = backStackEntry.arguments?.getInt("rutinaId") ?: 0
+                            TrainingView(navController = navController, db = db, rutinaId = rutinaId)
                         }
                     }
 
