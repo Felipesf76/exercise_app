@@ -1,8 +1,5 @@
 package com.example.exercise_app.views.components
 
-import android.util.Log
-import androidx.compose.foundation.Image
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -10,20 +7,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.exercise_app.R
 
 @Composable
 fun ExerciseCard(
     nombre: String?,
     descripcion: String?,
-    imagenResId: Int?,
+    imagenResId: String?,
     repeticiones: Int?,
     series: Int?,
     descanso: Int?,
@@ -64,7 +61,6 @@ fun ExerciseCard(
                     onCheckedChange = {
                         isChecked = it
                         onCheckedChange(it)
-                        //Log.d("ExerciseCard", if (it) "$nombre agregado" else "$nombre eliminado")
                     },
                     colors = SwitchDefaults.colors (
                         checkedTrackColor = colorResource(R.color.Fourth),
@@ -81,8 +77,9 @@ fun ExerciseCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
-                Image(
-                    painter = painterResource(id = imagenResId!!),
+                val context = LocalContext.current
+                AsyncImage(
+                    model = "android.resource://${context.packageName}/drawable/$imagenResId",
                     contentDescription = nombre,
                     modifier = Modifier
                         .size(80.dp)

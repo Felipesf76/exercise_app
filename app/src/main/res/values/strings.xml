@@ -17,4 +17,5 @@
     <string name="finish_training">Terminar Entrenamiento</string>
     <string name="routin_name">Nombre de la rutina</string>
     <string name="series">Series</string>
+    <string name="routine_created">Rutina creada correctamente</string>
 </resources>

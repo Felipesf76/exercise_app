@@ -27,7 +27,7 @@ interface RutinaEjercicioDAO {
     @Query("UPDATE rutinas_ejercicios SET ejercicio_id = :nuevoEjercicioId WHERE rutina_id = :rutinaId AND ejercicio_id = :ejercicioId")
     suspend fun actualizarEjercicioEnRutina(rutinaId: Int,ejercicioId: Int,nuevoEjercicioId: Int)
 
-    //elimina todas las relaciones para la rutina cuyo ejercicio_id no este en la list6a de entrada
+    //elimina todas las relaciones para la rutina cuyo ejercicio_id no este en la lista de entrada
     @Query("""
     DELETE FROM rutinas_ejercicios
     WHERE rutina_id = :rutinaId AND ejercicio_id NOT IN (:idsEjerciciosSeleccionados)

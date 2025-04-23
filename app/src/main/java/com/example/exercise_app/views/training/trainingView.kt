@@ -1,6 +1,5 @@
 package com.example.exercise_app.views.training
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -9,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.exercise_app.R
 import androidx.compose.material3.Text
@@ -33,14 +31,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.collections.firstOrNull
 
-data class Exercise(
-    val nombre: String,
-    val descripcion: String,
-    val imagenResId: String,
-    val series: Int,
-    val repeticiones: Int,
-    val descanso: Int
-)
 
 data class ResultadoEjercicio(
     val nombre: String,
@@ -57,7 +47,6 @@ fun TrainingView(navController: NavHostController,db: Database, rutinaId: Int) {
     var rutinaNombre by remember { mutableStateOf<String>("") }
     val scrollState = rememberScrollState()
     var mostrarDialogo by remember { mutableStateOf(false) }
-    var mensajeEvaluacion by remember { mutableStateOf("") }
     var resultados by remember { mutableStateOf(mutableListOf<ResultadoEjercicio>()) }
 
 
@@ -71,8 +60,6 @@ fun TrainingView(navController: NavHostController,db: Database, rutinaId: Int) {
             }
         }
     }
-
-
 
     LaunchedEffect(Unit) {
         loadExercisesbyRoutine()
@@ -119,7 +106,6 @@ fun TrainingView(navController: NavHostController,db: Database, rutinaId: Int) {
             Button(
                 onClick = {
                     mostrarDialogo = true
-                    //navController.navigate(Screen.HomeScreen.route)
                 },
                 modifier = Modifier.align(Alignment.End),
                 colors = ButtonDefaults.buttonColors(

@@ -27,6 +27,8 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import com.example.exercise_app.views.components.snackbar.SnackbarController
+import com.example.exercise_app.views.components.snackbar.SnackbarEvent
 
 
 @Composable
@@ -40,7 +42,9 @@ fun RoutineCard(
 
     Card(
         onClick = {
-            navController.navigate(Screen.TrainingScreen.route)
+            routine.idRutinas?.let { id ->
+                navController.navigate(Screen.TrainingScreen.withArgs(id))
+            }
         },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
@@ -103,14 +107,22 @@ fun RoutineCard(
                                     val relacionados = db.rutinaEjercicioDAO.getEjerciciosPorRutina(routine.idRutinas)
                                     if (relacionados.isEmpty()) {
                                         db.rutinaDao.deleteRutina(routine)
-                                        //Toast.makeText(context, "Rutina eliminada correctamente", Toast.LENGTH_SHORT).show()
-                                        //navController.popBackStack() // Vuelve a la pantalla anterior
+                                        scope.launch {
+                                            SnackbarController.sendEvent(
+                                                event = SnackbarEvent(
+                                                    message = "Rutina eliminada correctamente"
+                                                )
+                                            )
+                                            navController.navigate(Screen.RoutineScreen.route)
+                                        }
                                     } else {
-                                        Toast.makeText(
-                                            context,
-                                            "No se puede eliminar la rutina. Aún tiene ejercicios relacionados.",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        scope.launch {
+                                            SnackbarController.sendEvent(
+                                                event = SnackbarEvent(
+                                                    message = "No se puede eliminar la rutina. Aún tiene ejercicios relacionados"
+                                                )
+                                            )
+                                        }
                                     }
                                 }
                             }
