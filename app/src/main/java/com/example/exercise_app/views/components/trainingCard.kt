@@ -36,10 +36,15 @@ fun TrainingCard(
     descanso: Int,
     onEvaluar: (seriesIngresadas: Int, repeticionesIngresadas: Int, pesoIngresado: Float) -> Unit) {
     var numSeries by remember { mutableStateOf(0) }
-    var numRep by remember { mutableStateOf(0) }
-    var numPeso by remember { mutableStateOf(0f) }
-    val context = LocalContext.current
+    var numSeriesText by remember { mutableStateOf("") }
 
+    var numRep by remember { mutableStateOf(0) }
+    var numRepText by remember { mutableStateOf("") }
+
+    var numPeso by remember { mutableStateOf(0f) }
+    var numPesoText by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
 
     Card(
         modifier = Modifier
@@ -138,10 +143,14 @@ fun TrainingCard(
             Column {
                 // Series input
                 OutlinedTextField(
-                    value = numSeries.toString(),
-                    onValueChange = {
-                        value ->
-                        numSeries = value.toIntOrNull() ?: 0
+                    value = numSeriesText,
+                    onValueChange = { value ->
+                        if (value.matches(Regex("^\\d*\$"))) { // Solo dígitos
+                            numSeriesText = value
+                            value.toIntOrNull()?.let {
+                                numSeries = it
+                            }
+                        }
                     },
                     label = {
                         Text(
@@ -149,6 +158,7 @@ fun TrainingCard(
                             color = colorResource(R.color.Secondary)
                         )
                     },
+                    placeholder = { Text("Ej: 3", color = colorResource(R.color.Secondary)) },
                     textStyle = TextStyle(color = colorResource(R.color.Secondary)),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
@@ -158,9 +168,14 @@ fun TrainingCard(
 
                 // Repeticiones input
                 OutlinedTextField(
-                    value = numRep.toString(),
+                    value = numRepText,
                     onValueChange = { value ->
-                        numRep = value.toIntOrNull() ?: 0
+                        if (value.matches(Regex("^\\d*\$"))) { // Solo dígitos
+                            numRepText = value
+                            value.toIntOrNull()?.let {
+                                numRep = it
+                            }
+                        }
                     },
                     label = {
                         Text(
@@ -168,6 +183,7 @@ fun TrainingCard(
                             color = Color.Black
                         )
                     },
+                    placeholder = { Text("Ej: 10", color = colorResource(R.color.Secondary)) },
                     textStyle = TextStyle(color = colorResource(R.color.Secondary)),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
@@ -177,15 +193,21 @@ fun TrainingCard(
 
                 // Peso input
                 OutlinedTextField(
-                    value = numPeso.toString(),
+                    value = numPesoText,
                     onValueChange = { value ->
-                        numPeso = value.toFloatOrNull() ?: 0f
+                        if (value.matches(Regex("^\\d*\\.?\\d{0,2}\$"))) { // Dígitos + punto opcional + hasta 2 decimales
+                            numPesoText = value
+                            value.toFloatOrNull()?.let {
+                                numPeso = it
+                            }
+                        }
                     },
                     label = {
                         Text(
                             text = stringResource(R.string.weight),
                             color = colorResource(R.color.Secondary)
                         )},
+                    placeholder = { Text("Ej: 80.5", color = colorResource(R.color.Secondary)) },
                     textStyle = TextStyle(color = colorResource(R.color.Secondary)),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
