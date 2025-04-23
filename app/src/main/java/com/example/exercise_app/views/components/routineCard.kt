@@ -103,7 +103,7 @@ fun RoutineCard(
                                     val relacionados = db.rutinaEjercicioDAO.getEjerciciosPorRutina(routine.idRutinas)
                                     if (relacionados.isEmpty()) {
                                         db.rutinaDao.deleteRutina(routine)
-                                        Toast.makeText(context, "Rutina eliminada correctamente", Toast.LENGTH_SHORT).show()
+                                        //Toast.makeText(context, "Rutina eliminada correctamente", Toast.LENGTH_SHORT).show()
                                         //navController.popBackStack() // Vuelve a la pantalla anterior
                                     } else {
                                         Toast.makeText(
